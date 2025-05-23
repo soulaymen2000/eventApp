@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+
     public interface OnItemClickListener {
         void onItemClick(Event event);
     }
@@ -26,22 +27,29 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         this.listener = listener;
     }
 
-    public OnItemClickListener getListener() {
-        return listener;
-    }
-
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_event, parent, false);
         return new EventViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         Event event = eventList.get(position);
-        holder.eventTitle.setText(event.getTitle() != null ? event.getTitle() : "Sans titre");
-        holder.eventDate.setText(event.getDate() != null ? dateFormat.format(event.getDate()) : "Date inconnue");
+
+        // Set event title
+        holder.eventTitle.setText(event.getTitle() != null ? event.getTitle() : "No Title");
+
+        // Set event date
+        if (event.getDate() != null) {
+            holder.eventDate.setText(dateFormat.format(event.getDate()));
+        } else {
+            holder.eventDate.setText("Date not available");
+        }
+
+        // Load image with Glide
         if (event.getImageUrl() != null && !event.getImageUrl().isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load(event.getImageUrl())
@@ -51,6 +59,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         } else {
             holder.eventImage.setImageResource(R.drawable.error_image);
         }
+
+        // Click listener
         holder.itemView.setOnClickListener(v -> listener.onItemClick(event));
     }
 
@@ -66,6 +76,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             eventImage = itemView.findViewById(R.id.eventImage);
+            eventTitle = itemView.findViewById(R.id.eventTitle); // Fixed
+            eventDate = itemView.findViewById(R.id.eventDate);    // Fixed
         }
     }
 }

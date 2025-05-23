@@ -104,18 +104,46 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnEventFe
     public void onFetch(List<Event> events) {
         if (events == null || events.isEmpty()) {
             Toast.makeText(this, "Aucun événement récupéré", Toast.LENGTH_SHORT).show();
-            adapter = new EventAdapter(new ArrayList<>(), adapter.getListener());
+            // Create new adapter with original listener
+            adapter = new EventAdapter(new ArrayList<>(), event -> {
+                if (event.getId() == null) {
+                    Toast.makeText(MainActivity.this, "Erreur : ID de l'événement manquant", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
+                intent.putExtra("event_id", event.getId());
+                startActivity(intent);
+            });
             recyclerView.setAdapter(adapter);
             return;
         }
-        adapter = new EventAdapter(events, adapter.getListener());
+
+        // Update existing adapter with new data
+        adapter = new EventAdapter(events, event -> {
+            if (event.getId() == null) {
+                Toast.makeText(MainActivity.this, "Erreur : ID de l'événement manquant", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
+            intent.putExtra("event_id", event.getId());
+            startActivity(intent);
+        });
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onError(String error) {
         Toast.makeText(this, "Erreur : " + error, Toast.LENGTH_SHORT).show();
-        adapter = new EventAdapter(new ArrayList<>(), adapter.getListener());
+        // Reset adapter with empty list and original listener
+        adapter = new EventAdapter(new ArrayList<>(), event -> {
+            if (event.getId() == null) {
+                Toast.makeText(MainActivity.this, "Erreur : ID de l'événement manquant", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
+            intent.putExtra("event_id", event.getId());
+            startActivity(intent);
+        });
         recyclerView.setAdapter(adapter);
     }
 }
