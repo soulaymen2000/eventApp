@@ -12,7 +12,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements BaseActivity.OnEventFetch {
     private RecyclerView recyclerView;
     private EventAdapter adapter;
-    private Button btnLogin, btnRegister, btnAdmin;
+    private Button btnLogin, btnRegister, btnAdmin, btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,9 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnEventFe
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         btnAdmin = findViewById(R.id.btnAdmin);
+        btnLogout = findViewById(R.id.btnLogout);
+
+        btnLogout.setOnClickListener(v -> handleLogout());
 
         // Update button visibility based on authentication state
         updateButtonVisibility();
@@ -82,13 +85,25 @@ public class MainActivity extends BaseActivity implements BaseActivity.OnEventFe
             // Unauthenticated: Show login and register buttons, hide admin button
             btnLogin.setVisibility(Button.VISIBLE);
             btnRegister.setVisibility(Button.VISIBLE);
-            btnAdmin.setVisibility(Button.GONE);
+            btnAdmin.setVisibility(Button.VISIBLE);
+            btnLogout.setVisibility(Button.GONE);
         } else {
             // Authenticated: Hide login and register buttons, show admin button
             btnLogin.setVisibility(Button.GONE);
             btnRegister.setVisibility(Button.GONE);
-            btnAdmin.setVisibility(Button.VISIBLE);
+            btnAdmin.setVisibility(Button.GONE);
+            btnLogout.setVisibility(Button.VISIBLE);
+
+
         }
+    }
+
+    private void handleLogout() {
+        mAuth.signOut();
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     @Override
