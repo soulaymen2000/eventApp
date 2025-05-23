@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- NavBar avec dégradé -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/navbar_gradient"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/navbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EventApp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <!-- Contenu principal scrollable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center_horizontal">
+
+            <!-- Contenu existant ici : logo, événements, boutons -->
+            <!-- (le contenu que tu avais avant reste inchangé ici) -->
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logoImageView"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"
+                android:contentDescription="Logo" />
+
+            <!-- Liste des événements -->
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewEvents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp" />
+            <!-- Boutons -->
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔐 SE CONNECTER"
+                android:textStyle="bold"
+                android:backgroundTint="#E50065"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="24dp"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="👤 CRÉER UN COMPTE"
+                android:textStyle="bold"
+                android:backgroundTint="#333333"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="8dp"
+                android:padding="12dp" />
+
+            <Button
+                android:id="@+id/btnAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💼 ESPACE PRO"
+                android:textStyle="bold"
+                android:backgroundTint="#E50065"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="8dp"
+                android:padding="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
